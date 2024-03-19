@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import userRoutes from "./router/userRoutes.js";
+import courseRoutes from "./router/courseRoutes.js";
 import errorMiddleWare from "./middlewares/error.middleware.js";
 
 const app = express();
@@ -32,6 +33,9 @@ app.use("/ping", (req, res) => {
 
 // Routing for all user options
 app.use("/api/v1/user", userRoutes);
+
+//Routing for course options
+app.use("api/v1/courses", courseRoutes)
 
 // Routing for all other non existing routes
 app.all("*", (req, res) => {
