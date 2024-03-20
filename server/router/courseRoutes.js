@@ -1,10 +1,42 @@
-import {Router} from 'express';
-import { getAllCourses, getLecturesByCourseId } from '../controllers/courseController.js';
-import { isLoggedIn } from '../middlewares/auth.middleware.js';
+import { Router } from "express";
+import {
+  addLectureToCourseById,
+  createCourse,
+  //deleteLecture,
+  getAllCourses,
+  getLecturesByCourseId,
+  removeCourse,
+  updateCourse,
+} from "../controllers/courseController.js";
+import { authorizedRoles, isLoggedIn } from "../middlewares/auth.middleware.js";
+import upload from "../middlewares/multer.middleware.js";
 
-const router= Router();
+const router = Router();
 
-router.get('/', getAllCourses);
-router.get('/:id', isLoggedIn, getLecturesByCourseId);
+router
+  .route("/")
+  .get(getAllCourses)
+  .post(
+    isLoggedIn,
+    authorizedRoles("ADMIN"),
+    upload.single("thumbnail"),
+    createCourse
+  );
+
+router
+  .route("/:id")
+  .get(isLoggedIn, getLecturesByCourseId)
+  .put(isLoggedIn, authorizedRoles("ADMIN"), updateCourse)
+  .delete(isLoggedIn, authorizedRoles("ADMIN"), removeCourse)
+  .post(
+    isLoggedIn,
+    authorizedRoles("ADMIN"),
+    upload.single("lecture"),
+    addLectureToCourseById
+  );
+
+// router
+//   .route("/delete-lecture/:id")
+//   .delete(isLoggedIn, authorizedRoles("ADMIN"), deleteLecture);
 
 export default router;

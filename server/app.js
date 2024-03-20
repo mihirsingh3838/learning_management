@@ -35,7 +35,7 @@ app.use("/ping", (req, res) => {
 app.use("/api/v1/user", userRoutes);
 
 //Routing for course options
-app.use("api/v1/courses", courseRoutes)
+app.use("/api/v1/courses", courseRoutes)
 
 // Routing for all other non existing routes
 app.all("*", (req, res) => {
