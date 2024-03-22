@@ -1,16 +1,13 @@
 import './App.css'
 
-import { Routes } from 'react-router-dom'
+// import { Routes } from 'react-router-dom'
 
 function App() {
   return (
     <>
-      <Routes>
+      {/* <Routes>
 
-      </Routes>
-      <h1>
-        hello world!
-      </h1>
+      </Routes> */}
     </>
   )
 }
