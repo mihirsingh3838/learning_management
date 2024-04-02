@@ -4,22 +4,29 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import userRoutes from "./router/userRoutes.js";
 import courseRoutes from "./router/courseRoutes.js";
-import paymentRoutes from "./router/paymentRoutes.js"
+import paymentRoutes from "./router/paymentRoutes.js";
 import errorMiddleWare from "./middlewares/error.middleware.js";
+import { config } from "dotenv";
+
+config();
 
 const app = express();
-
-app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
 
 // for cross origin request issues
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: [process.env.FRONTEND_URL],
     credentials: true,
+    // 
+    // "http://localhost:5173"
+    // allowedHeaders: ["Content-Type", "Authorization"],
+    // methods: "GET,POST,PUT,DELETE,OPTIONS",
   })
 );
+
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
 
 // for parsing the cookies
 app.use(cookieParser());
@@ -36,10 +43,10 @@ app.use("/ping", (req, res) => {
 app.use("/api/v1/user", userRoutes);
 
 //Routing for course options
-app.use("/api/v1/courses", courseRoutes)
+app.use("/api/v1/courses", courseRoutes);
 
 // Routing for payment options
-app.use("/api/v1/payments", paymentRoutes)
+app.use("/api/v1/payments", paymentRoutes);
 
 // Routing for all other non existing routes
 app.all("*", (req, res) => {
