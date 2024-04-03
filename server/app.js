@@ -5,6 +5,7 @@ import morgan from "morgan";
 import userRoutes from "./router/userRoutes.js";
 import courseRoutes from "./router/courseRoutes.js";
 import paymentRoutes from "./router/paymentRoutes.js";
+import miscRoutes from './router/miscellaneousRoutes.js';
 import errorMiddleWare from "./middlewares/error.middleware.js";
 import { config } from "dotenv";
 
@@ -47,6 +48,8 @@ app.use("/api/v1/courses", courseRoutes);
 
 // Routing for payment options
 app.use("/api/v1/payments", paymentRoutes);
+
+app.use("/api/v1", miscRoutes);
 
 // Routing for all other non existing routes
 app.all("*", (req, res) => {
