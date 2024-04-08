@@ -95,11 +95,11 @@ const verifySubscription = async (req, res, next) => {
   }
 };
 
-const cancelSubscription = async (req, res, next) => {
+const cancelSubscription = asyncHandler(async (req, res, next) => {
   try {
     const { id } = req.user;
 
-    const user = User.findById(id);
+    const user = await User.findById(id);
 
     if (!user) {
       return next(new AppError("Unauthorized, please login!", 400));
@@ -121,7 +121,7 @@ const cancelSubscription = async (req, res, next) => {
   } catch (error) {
     return next(new AppError(error.message, 500));
   }
-};
+});
 
 const allPayments = async (req, res, next) => {
   try {
