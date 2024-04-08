@@ -1,3 +1,4 @@
+import asyncHandler from "../middlewares/asyncHandler.middleware.js";
 import Payment from "../model/payment.model.js";
 import User from "../model/user.model.js";
 import { razorpay } from "../server.js";
@@ -16,7 +17,7 @@ const getRazorPayApiKey = (req, res, next) => {
   }
 };
 
-const buySubscription = async (req, res, next) => {
+const buySubscription = asyncHandler(async (req, res, next) => {
   try {
     const { id } = req.user;
     const user = await User.findById(id);
@@ -32,6 +33,7 @@ const buySubscription = async (req, res, next) => {
     const subscription = await razorpay.subscriptions.create({
       plan_id: process.env.RAZORPAY_PLAN_ID,
       customer_notify: 1,
+      total_count: 12,
     });
 
     user.subscription.id = subscription.id;
@@ -47,7 +49,7 @@ const buySubscription = async (req, res, next) => {
   } catch (error) {
     return next(new AppError(error.message, 500));
   }
-};
+});
 
 const verifySubscription = async (req, res, next) => {
   try {
